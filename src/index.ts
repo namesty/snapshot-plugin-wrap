@@ -141,7 +141,8 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       this._apiUrl,
       GET_PROPOSALS,
       {
-        titleContains: args.searchTerm,
+        titleContains: args.titleContains,
+        spaces: args.spaces ?? undefined,
       }
     );
 

@@ -9,7 +9,8 @@ import { CoreClient, MaybeAsync } from "@polywrap/core-js";
 import { PluginModule } from "@polywrap/plugin-js";
 
 export interface Args_findProposals {
-  searchTerm: Types.String;
+  titleContains: Types.String;
+  spaces?: Array<Types.String> | null;
 }
 
 export interface Args_findProposalById {

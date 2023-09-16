@@ -28,15 +28,37 @@ export const manifest: WrapManifest = {
         "arguments": [
           {
             "kind": 34,
-            "name": "searchTerm",
+            "name": "titleContains",
             "required": true,
             "scalar": {
               "kind": 4,
-              "name": "searchTerm",
+              "name": "titleContains",
               "required": true,
               "type": "String"
             },
             "type": "String"
+          },
+          {
+            "array": {
+              "item": {
+                "kind": 4,
+                "name": "spaces",
+                "required": true,
+                "type": "String"
+              },
+              "kind": 18,
+              "name": "spaces",
+              "scalar": {
+                "kind": 4,
+                "name": "spaces",
+                "required": true,
+                "type": "String"
+              },
+              "type": "[String]"
+            },
+            "kind": 34,
+            "name": "spaces",
+            "type": "[String]"
           }
         ],
         "kind": 64,

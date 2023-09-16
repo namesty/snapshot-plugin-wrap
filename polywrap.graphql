@@ -57,7 +57,7 @@ type Vote {
 }
 
 type Module {
-  findProposals(searchTerm: String!): [Proposal!]!
+  findProposals(titleContains: String!, spaces: [String!]): [Proposal!]!
   findProposalById(id: String!): ProposalWithVotes
   getActiveUserProposals: [Proposal!]!
   getFollowedSpaces: [Space!]!
