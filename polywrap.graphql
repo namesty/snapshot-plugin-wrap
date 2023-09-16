@@ -1,0 +1,82 @@
+enum ProposalType {
+  SINGLE_CHOICE
+  APPROVAL
+  QUADRATIC
+  RANKED_CHOICE
+  WEIGHTED
+  BASIC
+}
+
+type Space {
+  id: String!
+  name: String!
+  about: String!
+  network: String!
+  symbol: String!
+  members: [String!]!
+  admins: [String!]!
+}
+
+type ProposalWithVotes {
+  id: String!
+  title: String!
+  body: String!
+  choices: [String!]!
+  start: Int!
+  end: Int!
+  snapshot: Int!
+  state: String!
+  author: String!
+  created: Int!
+  spaceId: String!
+  votes: [Vote!]!
+}
+
+type Proposal {
+  id: String!
+  title: String!
+  body: String!
+  choices: [String!]!
+  start: Int!
+  end: Int!
+  snapshot: Int!
+  state: String!
+  author: String!
+  created: Int!
+  spaceId: String!
+}
+
+type Vote {
+  id: String!
+  voter: String!
+  votingPower: String!
+  created: Int!
+  proposalId: String!
+  choice: [String!]!
+  spaceId: String!
+}
+
+type Module {
+  findProposals(searchTerm: String!): [Proposal!]!
+  findProposalById(id: String!): ProposalWithVotes
+  getActiveUserProposals: [Proposal!]!
+  getFollowedSpaces: [Space!]!
+  createProposal(
+    space: String!
+    type: ProposalType!
+    title: String!
+    body: String!
+    choices: [String!]!
+    start: Int!
+    end: Int!
+    snapshot: Int
+    discussion: String!
+  ): String!
+  voteProposal(
+    space: String!
+    proposal: String!
+    type: ProposalType!
+    choice: Int!
+    reason: String!
+  ): String!
+}
