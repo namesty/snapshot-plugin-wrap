@@ -19,6 +19,7 @@ export interface Args_findProposalById {
 }
 
 export interface Args_getFollowedSpaces {
+  user: Types.String;
 }
 
 export interface Args_createProposal {

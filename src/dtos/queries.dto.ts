@@ -1,6 +1,6 @@
 import { Variables } from "graphql-request";
 import { FollowDTO } from "./follow.dto";
-import { ProposalDTO } from "./proposal.dto";
+import { ProposalDTO, ProposalState } from "./proposal.dto";
 import { SpaceDTO } from "./space.dto";
 import { VoteDTO } from "./vote.dto";
 
@@ -38,7 +38,7 @@ export interface GetFollowsDTO {
 
 export interface GetProposalsArgs extends Variables {
   spaces?: string[];
-  state?: string;
+  state?: ProposalState;
   author?: string;
 }
 

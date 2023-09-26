@@ -71,7 +71,7 @@ type Module {
     spaceIds: [String!]
   ): [Proposal!]!
   findProposalById(id: String!): ProposalWithVotes
-  getFollowedSpaces: [Space!]!
+  getFollowedSpaces(user: String!): [Space!]!
   createProposal(
     spaceId: String!
     type: ProposalType!

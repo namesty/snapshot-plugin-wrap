@@ -138,6 +138,20 @@ export const manifest: WrapManifest = {
         "type": "Method"
       },
       {
+        "arguments": [
+          {
+            "kind": 34,
+            "name": "user",
+            "required": true,
+            "scalar": {
+              "kind": 4,
+              "name": "user",
+              "required": true,
+              "type": "String"
+            },
+            "type": "String"
+          }
+        ],
         "kind": 64,
         "name": "getFollowedSpaces",
         "required": true,

@@ -232,8 +232,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
     client: CoreClient,
     env?: null | undefined
   ): Promise<Space[]> {
-    const signerAddress = await this._web3Provider.getSigner().getAddress();
-    const spaceIds = await this.getUserFollowedSpaces(signerAddress);
+    const spaceIds = await this.getUserFollowedSpaces(args.user);
 
     const result = await request<GetSpacesDTO, GetSpacesArgs>(
       this._apiUrl,
