@@ -19,6 +19,15 @@ export const manifest: WrapManifest = {
       ],
       "kind": 8,
       "type": "ProposalType"
+    },
+    {
+      "constants": [
+        "CREATED",
+        "ACTIVE",
+        "CLOSED"
+      ],
+      "kind": 8,
+      "type": "ProposalState"
     }
   ],
   "moduleType": {
@@ -27,14 +36,14 @@ export const manifest: WrapManifest = {
       {
         "arguments": [
           {
+            "enum": {
+              "kind": 16384,
+              "name": "state",
+              "type": "ProposalState"
+            },
             "kind": 34,
             "name": "state",
-            "scalar": {
-              "kind": 4,
-              "name": "state",
-              "type": "String"
-            },
-            "type": "String"
+            "type": "ProposalState"
           },
           {
             "kind": 34,
@@ -50,22 +59,22 @@ export const manifest: WrapManifest = {
             "array": {
               "item": {
                 "kind": 4,
-                "name": "spaces",
+                "name": "spaceIds",
                 "required": true,
                 "type": "String"
               },
               "kind": 18,
-              "name": "spaces",
+              "name": "spaceIds",
               "scalar": {
                 "kind": 4,
-                "name": "spaces",
+                "name": "spaceIds",
                 "required": true,
                 "type": "String"
               },
               "type": "[String]"
             },
             "kind": 34,
-            "name": "spaces",
+            "name": "spaceIds",
             "type": "[String]"
           }
         ],
@@ -162,11 +171,11 @@ export const manifest: WrapManifest = {
         "arguments": [
           {
             "kind": 34,
-            "name": "space",
+            "name": "spaceId",
             "required": true,
             "scalar": {
               "kind": 4,
-              "name": "space",
+              "name": "spaceId",
               "required": true,
               "type": "String"
             },
@@ -570,16 +579,16 @@ export const manifest: WrapManifest = {
           "type": "Int"
         },
         {
+          "enum": {
+            "kind": 16384,
+            "name": "state",
+            "required": true,
+            "type": "ProposalState"
+          },
           "kind": 34,
           "name": "state",
           "required": true,
-          "scalar": {
-            "kind": 4,
-            "name": "state",
-            "required": true,
-            "type": "String"
-          },
-          "type": "String"
+          "type": "ProposalState"
         },
         {
           "kind": 34,
@@ -756,16 +765,16 @@ export const manifest: WrapManifest = {
           "type": "Int"
         },
         {
+          "enum": {
+            "kind": 16384,
+            "name": "state",
+            "required": true,
+            "type": "ProposalState"
+          },
           "kind": 34,
           "name": "state",
           "required": true,
-          "scalar": {
-            "kind": 4,
-            "name": "state",
-            "required": true,
-            "type": "String"
-          },
-          "type": "String"
+          "type": "ProposalState"
         },
         {
           "kind": 34,

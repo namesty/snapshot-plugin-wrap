@@ -48,7 +48,7 @@ export interface ProposalWithVotes {
   start: Types.Int;
   end: Types.Int;
   snapshot: Types.Int;
-  state: Types.String;
+  state: Types.ProposalState;
   author: Types.String;
   created: Types.Int;
   spaceId: Types.String;
@@ -64,7 +64,7 @@ export interface Proposal {
   start: Types.Int;
   end: Types.Int;
   snapshot: Types.Int;
-  state: Types.String;
+  state: Types.ProposalState;
   author: Types.String;
   created: Types.Int;
   spaceId: Types.String;
@@ -102,6 +102,19 @@ export type ProposalTypeString =
   | "BASIC"
 
 export type ProposalType = ProposalTypeEnum | ProposalTypeString;
+
+export enum ProposalStateEnum {
+  CREATED,
+  ACTIVE,
+  CLOSED,
+}
+
+export type ProposalStateString =
+  | "CREATED"
+  | "ACTIVE"
+  | "CLOSED"
+
+export type ProposalState = ProposalStateEnum | ProposalStateString;
 
 /// Enums END ///
 

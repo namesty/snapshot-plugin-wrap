@@ -7,6 +7,12 @@ enum ProposalType {
   BASIC
 }
 
+enum ProposalState {
+  CREATED
+  ACTIVE
+  CLOSED
+}
+
 type Space {
   id: String!
   name: String!
@@ -25,7 +31,7 @@ type ProposalWithVotes {
   start: Int!
   end: Int!
   snapshot: Int!
-  state: String!
+  state: ProposalState!
   author: String!
   created: Int!
   spaceId: String!
@@ -41,7 +47,7 @@ type Proposal {
   start: Int!
   end: Int!
   snapshot: Int!
-  state: String!
+  state: ProposalState!
   author: String!
   created: Int!
   spaceId: String!
@@ -59,11 +65,15 @@ type Vote {
 }
 
 type Module {
-  findProposals(state: String, author: String, spaces: [String!]): [Proposal!]!
+  findProposals(
+    state: ProposalState
+    author: String
+    spaceIds: [String!]
+  ): [Proposal!]!
   findProposalById(id: String!): ProposalWithVotes
   getFollowedSpaces: [Space!]!
   createProposal(
-    space: String!
+    spaceId: String!
     type: ProposalType!
     title: String!
     body: String!

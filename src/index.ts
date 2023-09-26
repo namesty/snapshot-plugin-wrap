@@ -8,10 +8,12 @@ import {
   Module,
   Proposal,
   ProposalType as WrapProposalType,
+  ProposalState as WrapProposalState,
   ProposalTypeEnum,
   ProposalWithVotes,
   Space,
   manifest,
+  ProposalStateEnum,
 } from "./wrap";
 
 import { ethers } from "ethers";
@@ -35,7 +37,7 @@ import { GET_FOLLOWS } from "./queries/GET_FOLLOWS";
 import { GET_PROPOSAL } from "./queries/GET_PROPOSAL";
 import { GET_VOTES } from "./queries/GET_VOTES";
 import { GET_SPACES } from "./queries/GET_SPACES";
-import { ProposalType } from "./dtos/proposal.dto";
+import { ProposalState, ProposalType } from "./dtos/proposal.dto";
 
 export interface SnapshotPluginConfig {
   isProduction: boolean;
@@ -59,6 +61,31 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
     this._client = new snapshot.Client712(this._apiUrl);
     this._web3Provider = config.web3Provider;
     this._appName = config.appName;
+  }
+
+  private _mapEnumToProposalState(type: WrapProposalState): ProposalState {
+    switch (type) {
+      case ProposalStateEnum.CREATED:
+      case "CREATED":
+        return ProposalState.CREATED;
+      case ProposalStateEnum.ACTIVE:
+      case "ACTIVE":
+        return ProposalState.ACTIVE;
+      case ProposalStateEnum.CLOSED:
+      case "CLOSED":
+        return ProposalState.CLOSED;
+    }
+  }
+
+  private _mapProposalStateToEnum(type: ProposalState): WrapProposalState {
+    switch (type) {
+      case ProposalState.CREATED:
+        return ProposalStateEnum.CREATED;
+      case ProposalState.ACTIVE:
+        return ProposalStateEnum.ACTIVE;
+      case ProposalState.CLOSED:
+        return ProposalStateEnum.CLOSED;
+    }
   }
 
   private _mapEnumToProposalType(type: WrapProposalType): ProposalType {
@@ -125,8 +152,10 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       GET_PROPOSALS,
       {
         author: args.author ?? undefined,
-        state: args.state ?? undefined,
-        spaces: args.spaces ?? undefined,
+        state: args.state
+          ? this._mapEnumToProposalState(args.state)
+          : undefined,
+        spaces: args.spaceIds ?? undefined,
       }
     );
 
@@ -139,7 +168,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       end: proposal.end,
       type: this._mapProposalTypeToEnum(proposal.type),
       snapshot: proposal.snapshot,
-      state: proposal.state,
+      state: this._mapProposalStateToEnum(proposal.state),
       author: proposal.author,
       created: proposal.created,
       spaceId: proposal.space.id,
@@ -180,7 +209,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       start: proposal.start,
       end: proposal.end,
       snapshot: proposal.snapshot,
-      state: proposal.state,
+      state: this._mapProposalStateToEnum(proposal.state),
       type: this._mapProposalTypeToEnum(proposal.type),
       author: proposal.author,
       created: proposal.created,
@@ -236,7 +265,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       this._web3Provider,
       signerAddress,
       {
-        space: args.space,
+        space: args.spaceId,
         type: this._mapEnumToProposalType(args.type),
         title: args.title,
         body: args.body,

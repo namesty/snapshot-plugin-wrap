@@ -9,9 +9,9 @@ import { CoreClient, MaybeAsync } from "@polywrap/core-js";
 import { PluginModule } from "@polywrap/plugin-js";
 
 export interface Args_findProposals {
-  state?: Types.String | null;
+  state?: Types.ProposalState | null;
   author?: Types.String | null;
-  spaces?: Array<Types.String> | null;
+  spaceIds?: Array<Types.String> | null;
 }
 
 export interface Args_findProposalById {
@@ -22,7 +22,7 @@ export interface Args_getFollowedSpaces {
 }
 
 export interface Args_createProposal {
-  space: Types.String;
+  spaceId: Types.String;
   type: Types.ProposalType;
   title: Types.String;
   body: Types.String;
