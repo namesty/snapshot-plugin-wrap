@@ -1,3 +1,11 @@
+export type ProposalType =
+  | "single-choice"
+  | "approval"
+  | "quadratic"
+  | "ranked-choice"
+  | "weighted"
+  | "basic";
+
 export enum ProposalState {
   CREATED = "created",
   ACTIVE = "active",
@@ -14,6 +22,7 @@ export interface ProposalDTO {
   end: number;
   link: string;
   created: number;
+  type: ProposalType;
   discussion: string;
   snapshot: number;
   state: ProposalState;

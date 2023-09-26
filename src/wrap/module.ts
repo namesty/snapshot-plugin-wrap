@@ -9,15 +9,13 @@ import { CoreClient, MaybeAsync } from "@polywrap/core-js";
 import { PluginModule } from "@polywrap/plugin-js";
 
 export interface Args_findProposals {
-  titleContains: Types.String;
+  state?: Types.String | null;
+  author?: Types.String | null;
   spaces?: Array<Types.String> | null;
 }
 
 export interface Args_findProposalById {
   id: Types.String;
-}
-
-export interface Args_getActiveUserProposals {
 }
 
 export interface Args_getFollowedSpaces {
@@ -36,9 +34,7 @@ export interface Args_createProposal {
 }
 
 export interface Args_voteProposal {
-  space: Types.String;
-  proposal: Types.String;
-  type: Types.ProposalType;
+  proposalId: Types.String;
   choice: Types.Int;
   reason: Types.String;
 }
@@ -55,12 +51,6 @@ export abstract class Module<TConfig> extends PluginModule<TConfig> {
     client: CoreClient,
     env?: null
   ): MaybeAsync<Types.ProposalWithVotes | null>;
-
-  abstract getActiveUserProposals(
-    args: Args_getActiveUserProposals,
-    client: CoreClient,
-    env?: null
-  ): MaybeAsync<Array<Types.Proposal>>;
 
   abstract getFollowedSpaces(
     args: Args_getFollowedSpaces,

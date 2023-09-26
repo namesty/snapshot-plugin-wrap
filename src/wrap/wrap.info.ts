@@ -28,12 +28,20 @@ export const manifest: WrapManifest = {
         "arguments": [
           {
             "kind": 34,
-            "name": "titleContains",
-            "required": true,
+            "name": "state",
             "scalar": {
               "kind": 4,
-              "name": "titleContains",
-              "required": true,
+              "name": "state",
+              "type": "String"
+            },
+            "type": "String"
+          },
+          {
+            "kind": 34,
+            "name": "author",
+            "scalar": {
+              "kind": 4,
+              "name": "author",
               "type": "String"
             },
             "type": "String"
@@ -117,36 +125,6 @@ export const manifest: WrapManifest = {
             "type": "ProposalWithVotes"
           },
           "type": "ProposalWithVotes"
-        },
-        "type": "Method"
-      },
-      {
-        "kind": 64,
-        "name": "getActiveUserProposals",
-        "required": true,
-        "return": {
-          "array": {
-            "item": {
-              "kind": 8192,
-              "name": "getActiveUserProposals",
-              "required": true,
-              "type": "Proposal"
-            },
-            "kind": 18,
-            "name": "getActiveUserProposals",
-            "object": {
-              "kind": 8192,
-              "name": "getActiveUserProposals",
-              "required": true,
-              "type": "Proposal"
-            },
-            "required": true,
-            "type": "[Proposal]"
-          },
-          "kind": 34,
-          "name": "getActiveUserProposals",
-          "required": true,
-          "type": "[Proposal]"
         },
         "type": "Method"
       },
@@ -322,39 +300,15 @@ export const manifest: WrapManifest = {
         "arguments": [
           {
             "kind": 34,
-            "name": "space",
+            "name": "proposalId",
             "required": true,
             "scalar": {
               "kind": 4,
-              "name": "space",
+              "name": "proposalId",
               "required": true,
               "type": "String"
             },
             "type": "String"
-          },
-          {
-            "kind": 34,
-            "name": "proposal",
-            "required": true,
-            "scalar": {
-              "kind": 4,
-              "name": "proposal",
-              "required": true,
-              "type": "String"
-            },
-            "type": "String"
-          },
-          {
-            "enum": {
-              "kind": 16384,
-              "name": "type",
-              "required": true,
-              "type": "ProposalType"
-            },
-            "kind": 34,
-            "name": "type",
-            "required": true,
-            "type": "ProposalType"
           },
           {
             "kind": 34,
@@ -686,6 +640,18 @@ export const manifest: WrapManifest = {
           "name": "votes",
           "required": true,
           "type": "[Vote]"
+        },
+        {
+          "enum": {
+            "kind": 16384,
+            "name": "type",
+            "required": true,
+            "type": "ProposalType"
+          },
+          "kind": 34,
+          "name": "type",
+          "required": true,
+          "type": "ProposalType"
         }
       ],
       "type": "ProposalWithVotes"
@@ -836,6 +802,18 @@ export const manifest: WrapManifest = {
             "type": "String"
           },
           "type": "String"
+        },
+        {
+          "enum": {
+            "kind": 16384,
+            "name": "type",
+            "required": true,
+            "type": "ProposalType"
+          },
+          "kind": 34,
+          "name": "type",
+          "required": true,
+          "type": "ProposalType"
         }
       ],
       "type": "Proposal"

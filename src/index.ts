@@ -2,7 +2,6 @@ import {
   Args_createProposal,
   Args_findProposalById,
   Args_findProposals,
-  Args_getActiveUserProposals,
   Args_getFollowedSpaces,
   Args_voteProposal,
   CoreClient,
@@ -20,7 +19,6 @@ import snapshot from "@snapshot-labs/snapshot.js";
 import { PluginFactory, PluginPackage } from "@polywrap/plugin-js";
 import request from "graphql-request";
 import { GET_PROPOSALS } from "./queries/GET_PROPOSALS";
-import { ProposalState } from "./dtos/proposal.dto";
 import {
   GetFollowsArgs,
   GetFollowsDTO,
@@ -37,7 +35,7 @@ import { GET_FOLLOWS } from "./queries/GET_FOLLOWS";
 import { GET_PROPOSAL } from "./queries/GET_PROPOSAL";
 import { GET_VOTES } from "./queries/GET_VOTES";
 import { GET_SPACES } from "./queries/GET_SPACES";
-import { ProposalType } from "@snapshot-labs/snapshot.js/dist/sign/types";
+import { ProposalType } from "./dtos/proposal.dto";
 
 export interface SnapshotPluginConfig {
   isProduction: boolean;
@@ -86,6 +84,23 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
     }
   }
 
+  private _mapProposalTypeToEnum(type: ProposalType): WrapProposalType {
+    switch (type) {
+      case "single-choice":
+        return ProposalTypeEnum.SINGLE_CHOICE;
+      case "approval":
+        return ProposalTypeEnum.APPROVAL;
+      case "quadratic":
+        return ProposalTypeEnum.QUADRATIC;
+      case "ranked-choice":
+        return ProposalTypeEnum.RANKED_CHOICE;
+      case "weighted":
+        return ProposalTypeEnum.WEIGHTED;
+      case "basic":
+        return ProposalTypeEnum.BASIC;
+    }
+  }
+
   async getUserFollowedSpaces(userAddress: string): Promise<string[]> {
     const followsDto = await request<GetFollowsDTO, GetFollowsArgs>(
       this._apiUrl,
@@ -100,38 +115,6 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
     return spaceIds;
   }
 
-  async getActiveUserProposals(
-    args: Args_getActiveUserProposals,
-    client: CoreClient,
-    env?: null | undefined
-  ): Promise<Proposal[]> {
-    const signerAddress = await this._web3Provider.getSigner().getAddress();
-    const spaceIds = await this.getUserFollowedSpaces(signerAddress);
-
-    const result = await request<GetProposalsDTO, GetProposalsArgs>(
-      this._apiUrl,
-      GET_PROPOSALS,
-      {
-        spaces: spaceIds,
-        state: ProposalState.ACTIVE,
-      }
-    );
-
-    return result.proposals.map((proposal) => ({
-      id: proposal.id,
-      title: proposal.title,
-      body: proposal.body,
-      choices: proposal.choices,
-      start: proposal.start,
-      end: proposal.end,
-      snapshot: proposal.snapshot,
-      state: proposal.state,
-      author: proposal.author,
-      created: proposal.created,
-      spaceId: proposal.space.id,
-    }));
-  }
-
   async findProposals(
     args: Args_findProposals,
     client: CoreClient,
@@ -141,7 +124,8 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       this._apiUrl,
       GET_PROPOSALS,
       {
-        titleContains: args.titleContains,
+        author: args.author ?? undefined,
+        state: args.state ?? undefined,
         spaces: args.spaces ?? undefined,
       }
     );
@@ -153,6 +137,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       choices: proposal.choices,
       start: proposal.start,
       end: proposal.end,
+      type: this._mapProposalTypeToEnum(proposal.type),
       snapshot: proposal.snapshot,
       state: proposal.state,
       author: proposal.author,
@@ -196,6 +181,7 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
       end: proposal.end,
       snapshot: proposal.snapshot,
       state: proposal.state,
+      type: this._mapProposalTypeToEnum(proposal.type),
       author: proposal.author,
       created: proposal.created,
       spaceId: proposal.space.id,
@@ -272,10 +258,21 @@ export class SnapshotPlugin extends Module<SnapshotPluginConfig> {
     env?: null | undefined
   ): Promise<string> {
     const signerAddress = await this._web3Provider.getSigner().getAddress();
+
+    const proposal = await this.findProposalById(
+      { id: args.proposalId },
+      client,
+      env
+    );
+
+    if (!proposal) {
+      throw new Error(`Proposal with id ${args.proposalId} not found.`);
+    }
+
     const receipt = await this._client.vote(this._web3Provider, signerAddress, {
-      space: args.space,
-      proposal: args.proposal,
-      type: this._mapEnumToProposalType(args.type),
+      space: proposal.spaceId,
+      proposal: args.proposalId,
+      type: this._mapEnumToProposalType(proposal.type),
       choice: args.choice,
       reason: args.reason,
       app: this._appName,

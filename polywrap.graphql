@@ -30,6 +30,7 @@ type ProposalWithVotes {
   created: Int!
   spaceId: String!
   votes: [Vote!]!
+  type: ProposalType!
 }
 
 type Proposal {
@@ -44,6 +45,7 @@ type Proposal {
   author: String!
   created: Int!
   spaceId: String!
+  type: ProposalType!
 }
 
 type Vote {
@@ -57,9 +59,8 @@ type Vote {
 }
 
 type Module {
-  findProposals(titleContains: String!, spaces: [String!]): [Proposal!]!
+  findProposals(state: String, author: String, spaces: [String!]): [Proposal!]!
   findProposalById(id: String!): ProposalWithVotes
-  getActiveUserProposals: [Proposal!]!
   getFollowedSpaces: [Space!]!
   createProposal(
     space: String!
@@ -72,11 +73,5 @@ type Module {
     snapshot: Int
     discussion: String!
   ): String!
-  voteProposal(
-    space: String!
-    proposal: String!
-    type: ProposalType!
-    choice: Int!
-    reason: String!
-  ): String!
+  voteProposal(proposalId: String!, choice: Int!, reason: String!): String!
 }

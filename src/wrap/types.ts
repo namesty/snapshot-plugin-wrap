@@ -53,6 +53,7 @@ export interface ProposalWithVotes {
   created: Types.Int;
   spaceId: Types.String;
   votes: Array<Types.Vote>;
+  type: Types.ProposalType;
 }
 
 export interface Proposal {
@@ -67,6 +68,7 @@ export interface Proposal {
   author: Types.String;
   created: Types.Int;
   spaceId: Types.String;
+  type: Types.ProposalType;
 }
 
 export interface Vote {

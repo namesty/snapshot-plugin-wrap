@@ -14,7 +14,6 @@ export interface GetSpacesDTO {
 
 export interface GetProposalArgs extends Variables {
   id?: string;
-  titleContains?: string;
 }
 
 export interface GetProposalDTO {
@@ -40,7 +39,7 @@ export interface GetFollowsDTO {
 export interface GetProposalsArgs extends Variables {
   spaces?: string[];
   state?: string;
-  titleContains?: string;
+  author?: string;
 }
 
 export interface GetProposalsDTO {

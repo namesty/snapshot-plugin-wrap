@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 export const GET_PROPOSAL = gql`
-  query getProposal($id: String, $titleContains: String) {
-    proposals(where: { id: $id, title_contains: $titleContains }) {
+  query getProposal($id: String) {
+    proposals(where: { id: $id }) {
       id
       title
       network
@@ -15,6 +15,7 @@ export const GET_PROPOSAL = gql`
       discussion
       snapshot
       state
+      type
       scores
       author
       space {
